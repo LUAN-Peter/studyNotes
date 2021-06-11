@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: null
+heroImage: /assets/img/cover.jpeg
 heroText: Chaoxiang Study Notes
 tagline: null
 actionText: Go!
