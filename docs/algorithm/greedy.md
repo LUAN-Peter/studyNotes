@@ -56,5 +56,48 @@ var numRabbits = function(answers) {
 };
 ```
 
+## Candy
+[to LeetCode 135][3]
+> There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings. You are giving candies to these children subjected to the following requirements:  
+> * Each child must have at least one candy.
+> * Children with a higher rating get more candies than their neighbors.  
+> 
+> Return the minimum number of candies you need to have to distribute the candies to the children.  
+**Input**: ratings = \[1, 0, 2\]
+**Output**: 5
+1 1 2
+### Thinking: 
+A simple idea is dividing the rules into two parts. 
+1. From left to right, the children `i + 1` has more candies than `i`, if the `rating[i + 1] > rating[i]`. 
+2. From right to left, the children `i - 1` has more candies than `i`, if the `rating[i - 1] > rating[i]`.  
+
+If a distribution satisfiy the conditions, it may be a solution. But we should calculate the minimum. So we use an array to store the candies distribution, and initialize the values with `1`. Then we scan it from left to right. If we find the next one rate is bigger than this one, we give `candies[i] + 1` to the `i + 1` child. Then we go back from right to left. The only difference is we choose the maximum between the new number and the old one.  
+By the way, when it comes to the problem like this - shape like a mountain, we could considering using the method mentioned above. Tranverse twice with different rules.
+
+### Solution: 
+```js
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+var candy = function(ratings) {
+    const N = ratings.length;
+    const candies = new Array(N).fill(1);
+    let result = 0;
+    for (let i = 1; i < N; i++) {
+        if (ratings[i] > ratings[i - 1]) {
+            candies[i] = candies[i - 1] + 1;
+        }
+    }
+    for (let i = N - 2; i >= 0; i--) {
+        if (ratings[i] > ratings[i + 1]) {
+            candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+        }
+    }
+    candies.forEach(elem => result += elem);
+    return result;
+};
+```
 [1]: https://leetcode-cn.com/problems/rabbits-in-forest/
-[2]: /assets/img/rabbit.png
+[2]: ../.vuepress/public/assets/img/rabbit.png
+[3]: https://leetcode-cn.com/problems/candy/

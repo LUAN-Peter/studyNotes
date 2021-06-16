@@ -40,4 +40,4 @@ var leastBricks = function(wall) {
 ```
 
 [1]: https://leetcode-cn.com/problems/brick-wall/
-[2]: /assets/img/brickWall.png
+[2]: ../.vuepress/public/assets/img/brickWall.png

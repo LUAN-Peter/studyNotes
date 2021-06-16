@@ -6,8 +6,12 @@ tagline: null
 actionText: Go!
 actionLink: /algorithm/
 features:
-- title: Algorithm
-  details: Review the exercise in LeetCode.
+- title: ALGORITHM
+  details: Knowledge organization of what I've learnt.
+- title: JAVASCRIPT
+  details: Review the interesting & vital stuff in JS.
+- title: IoT
+  details: If I'm free...
 footer: MIT Licensed | Copyright © 2018-present Evan You
 ---
 # 
