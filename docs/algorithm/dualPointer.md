@@ -2,7 +2,7 @@
 > Pointer stores the address value of data. In other words, it points to the location of the target data.
 
 
-Sometimes we can use dual pointers(or two pointers) to simplify calculation. There are 2 kinds of techniques most widely used. The one is **Fast-Slow Pointers**, the other is **Collided Pointers**. But anyway, they just move in different direction, and the nature still not change.
+Sometimes we can use dual pointers(or two pointers) to simplify the calculation. There are 2 kinds of techniques most widely used. The one is **Fast-Slow Pointers**. The other is **Collided Pointers**. But anyway, they just move in a different direction, and nature still does not change.
 
 ## Trapping Rain Water
 [to LeetCode 42][1]
@@ -18,8 +18,8 @@ The maximum trapping water in position `i` depends on the minimum between the ma
 So we can use **Collided Pointers** to scan the array, and maintain the maximum. However, we should consider how to move the pointer next. I handle the smaller one between `left` and `right`.  
 
 
-Here we prove the rationality. Assuming `height[left] < height[right]`, we have `Max_left < Max_right`, vice versa. To prove this step, just consider `Max_left = height[left]` and `Max_right = height[right]` at the beginning. So we can only assure the smaller's `left and right boundaries`. Then we add the smaller's capacity to the `result` and move it to the next one. After moving it, we update the maximum corresponding. During the process, the side(left or right) with maximum value pointed currently, also has the maximum. That is to say in formula: `height[left] < height[right] => Max_left < Max_right`, vice versa.  
-And then it is kinds of mathmatical induction.
+Here we prove rationality. Assuming `height[left] < height[right]`, we have `Max_left < Max_right`, vice versa. To prove this step, just consider `Max_left = height[left]` and `Max_right = height[right]` at the beginning. So we can only assure the smaller's `left and right boundaries`. Then we add the smaller's capacity to the `result` and move it to the next one. After moving it, we update the maximum corresponding. During the process, the side(left or right) with the maximum value pointed currently also has the maximum. That is to say in formula: `height[left] < height[right] => Max_left < Max_right`, vice versa.  
+And then, it is a kind of mathematical induction.
 ### Solution:
 ```js
 /**
@@ -56,7 +56,7 @@ Note that the input array is passed in by reference, which means a modification 
 **Output**: 5, nums = \[1, 1, 2, 2, 3\]  
 
 ### Thinking:
-We can deduct that if `nums[i] == nums[i - 2]`, the number of value in `i` position will be 2 or more, because it is a sorted array. So we can consider using **Fast-Slow Pointers** - to maintains a slow pointer and a fast pointer. The slow pointer records the position of the actual array we want to return, that is to say point to the end of the result array. Though we do not cut the array, can we still get the result from the first `slow` number of the array. The fast pointer records the position we are checking.
+We can deduce that if `nums[i] == nums[i - 2]`, the value in `i` position will be 2 or more because it is a sorted array. So we can consider using **Fast-Slow Pointers** - to maintains a slow pointer and a fast pointer. The slow pointer records the position of the actual array we want to return, pointing to the end of the result array. Though we do not cut the array, we still get the result from the first `slow` number. The fast pointer records the position we are checking.  
 
 ### Solution:
 ```js

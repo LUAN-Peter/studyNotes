@@ -2,6 +2,14 @@ module.exports = {
     base: '/studyPages/',
     title: 'Chaoxiang\'s Study Notes',
     description: 'Just playing around',
+    // head: [
+    //     [
+    //         'link', {
+    //             rel: 'icon', 
+    //             href: '/favicon.ico' 
+    //         }
+    //     ]
+    // ],
     markdown: {
         // options for markdown-it-anchor
         anchor: { permalink: false },
@@ -41,11 +49,22 @@ module.exports = {
                     path: '/algorithm/dualPointer',
                     sidebarDepth: 1,
                 }, {
+                    title: 'Dynamic Programming',
+                    path: '/algorithm/dynamicProgram',
+                    sidebarDepth: 1,
+                }, {
                     title: 'Greedy Strategy',
                     path: '/algorithm/greedy',
                     sidebarDepth: 1,
-                },
-                {
+                },{
+                    title: 'Depth-first Search',
+                    path: '/algorithm/dfs',
+                    sidebarDepth: 1,
+                }, {
+                    title: 'Union Find',
+                    path: '/algorithm/unionfind',
+                    sidebarDepth: 1,
+                }, {
                     title: 'Other',
                     path: '/algorithm/other',
                     sidebarDepth: 1,
