@@ -79,8 +79,7 @@ module.exports = {
                     title: 'Data Types',
                     path: '/javascript/dataType',
                     sidebarDepth: 1,
-                },
-                {
+                }, {
                     title: 'Object',
                     path: '/javascript/object',
                     sidebarDepth: 1,
@@ -88,13 +87,17 @@ module.exports = {
                     title: 'Prototype Chain',
                     path: '/javascript/prototype',
                     sidebarDepth: 1,
-                },{
+                }, {
                     title: 'JavaScript Inheritance',
                     path: '/javascript/inheritance',
                     sidebarDepth: 1,
                 }, {
-                    title: 'Garbage Collection',
-                    path: '/javascript/gc',
+                    title: 'Memory Mangement',
+                    path: '/javascript/jsmemory',
+                    sidebarDepth: 1,
+                }, {
+                    title: 'Events Execution',
+                    path: '/javascript/eventExec',
                     sidebarDepth: 1,
                 }
             ]

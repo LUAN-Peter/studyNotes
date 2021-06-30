@@ -30,7 +30,7 @@ The `typeof` function should be only used for the purpose of checking **Data Typ
 ```js
 // A new type function referenced
 function type(obj, showFullClass) {
-    // 这一段不知道在干嘛
+    // 如果showFullClass为true，object就变成形式[object Object]，为了兼容性
     if (showFullClass && typeof obj == 'object') {
         return Object.prototype.toString.call(obj);
     }
@@ -38,7 +38,7 @@ function type(obj, showFullClass) {
     if (obj == null) {
         return (obj + '').toLowerCase();
     }
-    // 对obj调用Object.prototype.toString()，返回[type, Object]
+    // 对obj调用Object.prototype.toString()，[object XXX] => XXX
     let deepType = Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
     if (deepType == 'generatorfunction') {
         return 'function';

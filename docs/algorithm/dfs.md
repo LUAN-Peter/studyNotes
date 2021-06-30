@@ -96,7 +96,7 @@ The code is **Solution 1**.
 ***  
 The spacial complexity is still $O(n)$, and we can improve to $O(1)$ with `Morris Algorithm`. [Morris Traversal][6]
 ::: danger Be Cautious!
-Morris traversal would change the structure of tree! Sometimes you debug by printing out the binary tree, which may be cause endless loop because of ring.
+Morris traversal would change the structure of tree, though the algorithm would correct the pointer at last! Sometimes you may debug by printing out the binary tree, which may cause endless loop because of ring.
 :::
 The procedure is showing as below:  
 ![Image][7]
@@ -151,8 +151,119 @@ var inorderTraversal = function(root) {
     }
     return result;
 };
-```
+```  
 
+## Deep Copy an Object
+> A deep copy means the fields are dereferenced. When you change the `primitives` in the old object, the new object should not be changed. Also, we need to take the prototype chain into consideration.  
+
+### Thinking:  
+We should complete the algorithm with depth-first search template. And there are something we need to pay attention to:  
+* What kinds of `data types` will be in an object? 
+![Image][10]
+According to [dataType][8], they will be **String**, **Number**, **Null**, **Undefined**, **Symbol**, **Boolean**, **BigInt**, **Object**. In these cases, we can return directly when the type is **String**, **Number**, **Null**, **Undefined**, **Boolean**, **BigInt**. When we solve the referenced variable, we perceive the difference among **Array**, **Map**, **Set**, **Function** and **Object**. If the variable is of **Function**, we pass it to the new object directly because only shall we need provide a entry. And we create a new instance and invoke the copy function recurrsively when meeting **Array**, **Map**, **Set**, **Function** and **Object** types.   
+Okay, there is only **Symbol** type left. We have 2 strategy in fact: Create a new one, or use the old one. Here we choose the second strategy.  
+
+::: tip Acquisition of fields
+We had better acquire the iterator to acquire all fields of an object with method `Reflect.ownkeys()`. According to [MDN][9], `Reflect.ownKeys` returns an array of the target object's own property keys. Its return value is equivalent to `Object.getOwnPropertyNames(target).concat(Object.getOwnPropertySymbols(target))`. `Object.getOwnPropertyNames(target)` can return all properties including those **non-enumerable**, except for **Symbol**. And `Object.getOwnPropertySymbols(target))` returns an array of all symbol properties upon a given object.
+:::  
+
+::: warning More about Function solution
+1. Sometimes, we have to change `this` direction with `Function.prototype.bind()`. But I yet to figured out how to design gracefully.  
+2. Do NOT forget **Generator** function!
+:::  
+* How to judge the type?  
+We can use `Object.prototype.toString()` to detect object class and type as well. [MDN][11]
+
+### Solution:
+```js
+let obj = {
+    'str': 'myString',
+    'list': [1, 2, 3],
+    'mySymbol': Symbol('sym'),
+    'subObj': {
+        's': 'myString2',
+        'list2': [4, 5, 6]
+    },
+    'map': new Map([
+        ['old1', 'oldVal1'],
+        ['old2', 'oldVal2']
+    ]),
+    'set': new Set(['old1', 'old2']),
+    myFunc: () => console.log('This is myFunc'),
+    myGenerator: function* () {
+        yield 1;
+        yield 2;
+        yield 3;
+    }
+}
+obj.__proto__ = {
+    "protoAttr": "Element in proto chain"
+}
+function duplicateObj(obj) {
+    return dfs(obj);
+    function dfs(obj) {
+        let thisType = type(obj);
+        if (thisType == 'object') {
+            let newObj = {};
+            for (let key of Reflect.ownKeys(obj)) {
+                newObj[key] = dfs(obj[key]);
+            }
+            // 原型链修改
+            newObj.__proto__ = obj.__proto__;
+            return newObj;
+        }
+        if (thisType == 'array') {
+            let newArray = [];
+            for (const elem of obj) {
+                newArray.push(dfs(elem));
+            }
+            return newArray;
+        }
+        if (thisType == 'map') {
+            let newMap = new Map();
+            for (const [tag, value] of obj.entries()) {
+                newMap.set(dfs(tag), dfs(value));
+            }
+            newMap.__proto__ = obj.__proto__;
+            return newMap;
+        }
+        if (thisType == 'set') {
+            let newSet = new Set();
+            for (const [tag, value] of obj.entries()) {
+                newSet.add(dfs(value));
+            }
+            newSet.__proto__ = obj.__proto__;
+            return newSet;
+        }
+        return obj;
+    }
+    function type(obj) {
+        let realType = Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
+        if (realType == 'generatorfunction') {
+            return 'function';
+        }
+        return realType;
+    }
+}
+let newObj = duplicateObj(obj);
+console.log(newObj);
+// 检测Symbol
+console.log(newObj.mySymbol == obj.mySymbol);
+// 检测原型链
+console.log(newObj.protoAttr);
+// 检测函数
+newObj.myFunc();
+// 检测生成器
+let gen = newObj.myGenerator();
+console.log(gen.next());
+console.log(gen.next());
+console.log(gen.next());
+// 检测Map, Set
+obj.map.set('newTag', 'newValue');
+obj.set.add('new');
+console.log("old: ", obj);
+console.log("new: ", newObj);
+```
 
 [1]: https://en.wikipedia.org/wiki/Depth-first_search
 [2]: https://leetcode-cn.com/problems/binary-tree-preorder-traversal/
@@ -161,3 +272,7 @@ var inorderTraversal = function(root) {
 [5]: ../.vuepress/public/assets/img/binaryTree1.png
 [6]: https://www.educative.io/edpresso/what-is-morris-traversal
 [7]: ../.vuepress/public/assets/img/Morris.png
+[8]: ../javascript/dataType.html#data-types
+[9]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/ownKeys
+[10]: ../.vuepress/public/assets/img/behaviorsTypes.png
+[11]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString#using_tostring_to_detect_object_class

@@ -5,7 +5,7 @@ According to the [MDN][1], prototypes are the mechanism by which JS objects inhe
 To have a better acquisition of these obscure concepts, we had better learn the [object][3] relative before.  
 
 ## Basis
-JavaScript is described as a prototype-based language. To a certain object, it has `prototype` object, which is still an object. So this `prototype` object **maybe**(NOT always) has its own `prototype` object... This is refered to the `prototype chain`. As I said before, not every prototype object has opportunity to have another prototype object. In the most of cases, it will only have the `Object.prototype`, which means it is just inherits the Object. And the `Object.prototype` inherits nothing, which means it is the end of the `prototype chain`. By the way, how can we find the `prototype` of a certain object? We use `__proto__` here. It is complex here. So we need illustrations to clarify more clearly.
+JavaScript is described as a prototype-based language. To a certain object, it has `prototype` object, which is still an object. So this `prototype` object **maybe**(NOT always) has its own `prototype` object... This is refered to the `prototype chain`. As I said before, not every prototype object has opportunity to have another prototype object. In the most of cases, it will only have the `Object.prototype`, which means it is just inherits the Object. And the `Object.prototype` inherits nothing, which means it is the end of the `prototype chain`. By the way, how can we find the `prototype` of a certain object? We use `__proto__` here. It is somewhat of complex. So we need illustrations to clarify more clearly.
 
 ### Dull Clarification
 This example is from MDN.
