@@ -18,4 +18,5 @@ footer: MIT Licensed | Copyright © 2018-present Evan You
 
 > I had a dream. I got everthing I wanted.
 
-It is a song by American singer and songwriter `Billie Eilish`. I hope everyone can obtain the opportunities to pursue his/her interests and dreams.
+It is a song by American singer and songwriter `Billie Eilish`. I hope everyone can obtain the opportunities to pursue his/her interests and dreams.  
+Writing blogs could help me review and enhancing understanding. That's a good method.

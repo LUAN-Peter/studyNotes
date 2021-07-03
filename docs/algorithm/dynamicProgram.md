@@ -234,6 +234,113 @@ let maxValue = knapsacks(W, value, weight);
 console.log(maxValue);
 ```
 
+## Greatest Sum Divisible by Three
+[to LeetCode 1262][8]
+> Given an array nums of integers, we need to find the maximum possible sum of elements of the array such that it is divisible by three.  
+**Input**: nums = [3,6,5,1,8]  
+**Output**: 18
+
+### Thinking:  
+It is easy to think of a rough Dynamic-programming method. When it comes to calculate something about **divisible**, we should build a DP array with **Remainder Dimension**. So we `dp[n][m]` is the largest sum of a subset `nums[:n]` such when `m == sum % 3`. For example, `dp[2][1] = 4` means the maximum sum is `4` from the `nums[:2]` and it is `1` when being divided by `3`.  
+* We could track the states seperately:  
+    *  When `nums[n] % 3 == 0`, the remainder is `0`:
+        * As for `dp[n][0]`, it comes from `dp[n - 1][0] + nums[n]` if `dp[n - 1][0]` is available. Or it is equal to `nums[n]`.
+        * As for `dp[n][1]`, it comes from `dp[n - 1][1] + nums[n]` if `dp[n - 1][1]` is available. Or it is equal to `nums[n]`.
+        * As for `dp[n][2]`, it comes from `dp[n - 1][2] + nums[n]` if `dp[n - 1][2]` is available. Or it is equal to `nums[n]`.  
+
+    We can see the procedure as following:  
+    ![Image][9]
+
+    *  When `nums[n] % 3 == 1`, the remainder is `1`:
+    We can see the procedure as following:  
+    ![Image][10]
+
+    *  When `nums[n] % 3 == 2`, the remainder is `2`:
+    We can see the procedure as following:  
+    ![Image][11]
+
+Then we should consider the initial status. We build up a sentinel (dummy) at the beginning of `dp`. When we have a remainder `m`, the only status we can make sure to update if `dp[][m]`. As a result, we need to check if `dp[n - 1][not m]` are availble. Then we have **Solution 1**.  
+
+**Improvement:**  
+`dp[n]` is only related to previous states. So we can only use an array with 3 elements to maintain previous states, like `dp = [x, x, x]`, so as to reducing the spacial complexity to `O(1)`.  
+Also we can ignore the particular remainder `nums[n] % 3`. Actually, `dp[0]`, `dp[1]` and `dp[2]` would transit to new status automatically. Then it's vital to find the common transition partern. We find the `(dp[0] + num) % 3` element will transit to the new `(dp[0] + num) % 3` element eventually. So do `dp[1]` and `dp[2]`. Besides, The unavailable element will transit to an available one, as the initial value is `0`. Finally we have **Solution 2**. The procedure is shown as following: 
+![Image][12]  
+![Image][13]  
+
+### Solution 1:  
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var maxSumDivThree = function(nums) {
+    const N = nums.length;
+    let dp = new Array(N + 1).fill(0).map((value, index) => new Array(3).fill(0));
+    for (let i = 1; i <= N; i++) {
+        let num = nums[i - 1];
+        let remain = num % 3;
+        if (remain == 0) {
+            dp[i][0] = dp[i - 1][0] + num;
+            if (dp[i - 1][1] != 0) {
+                dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][1] + num);
+            } else {
+                dp[i][1] = dp[i - 1][1];
+            }
+            if (dp[i - 1][2] != 0) {
+                dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][2] + num);
+            } else {
+                dp[i][2] = dp[i - 1][2];
+            }
+            continue;
+        }
+        if (remain == 1) {
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] + num);
+            if (dp[i - 1][2] != 0) {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][2] + num);
+            } else {
+                dp[i][0] = dp[i - 1][0];
+            }
+            if (dp[i - 1][1] != 0) {
+                dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][1] + num);
+            } else {
+                dp[i][2] = dp[i - 1][2];
+            }
+            continue;
+        }
+        if (remain == 2) {
+            dp[i][2] = Math.max(dp[i - 1][2], dp[i - 1][0] + num);
+            if (dp[i - 1][1] != 0) {
+                dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + num);
+            } else {
+                dp[i][0] = dp[i - 1][0];
+            }
+            if (dp[i - 1][2] != 0) {
+                dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][2] + num);
+            } else {
+                dp[i][1] = dp[i - 1][1];
+            }
+            continue;
+        }
+    }
+    return Math.max(dp[N][0]);
+};
+```
+### Solution 2:
+```js
+var maxSumDivThree = function(nums) {
+    let dp = new Array(3).fill(0);
+    for (const num of nums) {
+        let a = dp[0] + num;
+        let b = dp[1] + num;
+        let c = dp[2] + num;
+        dp[a % 3] = Math.max(dp[a % 3], a);
+        dp[b % 3] = Math.max(dp[b % 3], b);
+        dp[c % 3] = Math.max(dp[c % 3], c);
+    }
+    return Math.max(dp[0]);
+};
+```
+
 [1]: https://en.wikipedia.org/wiki/Dynamic_programming
 [2]: https://en.wikipedia.org/wiki/Knapsack_problem
 [3]: https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
@@ -241,3 +348,9 @@ console.log(maxValue);
 [5]: ../.vuepress/public/assets/img/01knapsack2.png
 [6]: ../.vuepress/public/assets/img/01knapsack3.png
 [7]: https://www.cxyxiaowu.com/8536.html
+[8]: https://leetcode-cn.com/problems/greatest-sum-divisible-by-three/
+[9]: ../.vuepress/public/assets/img/sum3_1.png
+[10]: ../.vuepress/public/assets/img/sum3_2.png
+[11]: ../.vuepress/public/assets/img/sum3_3.png
+[12]: ../.vuepress/public/assets/img/sum3_4.png
+[13]: ../.vuepress/public/assets/img/sum3_5.png
