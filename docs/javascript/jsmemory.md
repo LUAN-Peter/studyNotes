@@ -57,7 +57,7 @@ In the `f()`'s COE, the property `name` is `Peter` instead of `Mary`. Stack is u
 Generally, the data in Heap can be arbitrarily huge. As a result, if we put them into the Stack, it would take a long time to do the recovery which would affect the execution of next function. Tackfully, if we keep them in Heap, we can recovery them when there is no urgent task.  
 
 ## Garbage Collection
-> http://lkml.iu.edu/hypermail/linux/kernel/9608/0191.html
+
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
 [2]: ./dataType.html

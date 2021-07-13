@@ -99,6 +99,10 @@ module.exports = {
                     title: 'Events Execution',
                     path: '/javascript/eventExec',
                     sidebarDepth: 1,
+                }, {
+                    title: 'Process Thread',
+                    path: '/javascript/processThread',
+                    sidebarDepth: 1,
                 }
             ]
         }
