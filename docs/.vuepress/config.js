@@ -92,6 +92,10 @@ module.exports = {
                     path: '/javascript/inheritance',
                     sidebarDepth: 1,
                 }, {
+                    title: 'Execution Context',
+                    path: '/javascript/context',
+                    sidebarDepth: 1,
+                }, {
                     title: 'Memory Mangement',
                     path: '/javascript/jsmemory',
                     sidebarDepth: 1,
